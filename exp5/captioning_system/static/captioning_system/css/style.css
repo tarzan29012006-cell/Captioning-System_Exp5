@@ -1,0 +1,176 @@
+/* ==========================================================================
+   CLIPVision AI - Custom Stylesheet
+   ========================================================================== */
+
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --bg-surface: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.glass-nav {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--primary-gradient);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+}
+
+.text-primary-gradient {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #1e293b 0%, #4f46e5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bg-gradient-primary {
+    background: var(--primary-gradient) !important;
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+    border: 2px dashed #cbd5e1;
+    background-color: #f8fafc;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.drag-over {
+    border-color: var(--primary-color);
+    background-color: #eef2ff;
+}
+
+.upload-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background-color: #e0e7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.upload-dropzone:hover .upload-icon-wrapper {
+    transform: translateY(-4px);
+}
+
+.preview-img {
+    max-height: 260px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Result Card */
+.result-card {
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+.result-image-box {
+    max-width: 360px;
+    max-height: 240px;
+    border-radius: 14px;
+}
+
+.result-image-box img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.primary-caption-box {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+/* Gallery & Cards */
+.gallery-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.gallery-image-wrapper {
+    height: 200px;
+    background-color: #0f172a;
+}
+
+.gallery-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-card:hover .gallery-img {
+    transform: scale(1.05);
+}
+
+.caption-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 44px;
+}
+
+.detail-img {
+    max-height: 480px;
+    object-fit: contain;
+}
+
+.empty-icon-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Code block highlight */
+pre {
+    border-radius: 10px;
+}
+
+pre code {
+    font-size: 0.85rem;
+    line-height: 1.5;
+}

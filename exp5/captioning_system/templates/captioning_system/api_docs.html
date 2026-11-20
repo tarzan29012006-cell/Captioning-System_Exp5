@@ -1,0 +1,172 @@
+{% extends 'captioning_system/base.html' %}
+{% load static %}
+
+{% block title %}REST API Documentation - CLIPVision AI{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="text-center mb-5">
+        <h1 class="display-6 fw-bold">REST API Reference</h1>
+        <p class="text-muted lead col-lg-8 mx-auto">
+            Programmatically upload images, run CLIP zero-shot caption matching, and retrieve classification probabilities via RESTful HTTP endpoints.
+        </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-lg-10">
+            <!-- Endpoint 1: POST /api/caption/ -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4 overflow-hidden">
+                <div class="card-header bg-dark text-white p-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-success fw-bold px-3 py-2">POST</span>
+                        <code class="text-white fs-6">/api/caption/</code>
+                    </div>
+                    <span class="badge bg-secondary">Multipart Form</span>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted">
+                        Accepts an image file, runs OpenAI CLIP embedding cross-attention against candidate captions, and returns the top predicted caption and probability distribution.
+                    </p>
+
+                    <h6 class="fw-bold mt-4 mb-2">Request Parameters (Form-Data):</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm small">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>image</code></td>
+                                    <td>File (Binary)</td>
+                                    <td><span class="badge bg-danger">Required</span></td>
+                                    <td>Image file (JPG, PNG, WEBP, GIF).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>custom_candidates</code></td>
+                                    <td>String / JSON Array</td>
+                                    <td><span class="badge bg-secondary">Optional</span></td>
+                                    <td>Custom candidate sentences separated by newlines or JSON array of strings.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>save_to_db</code></td>
+                                    <td>Boolean ('true'/'false')</td>
+                                    <td><span class="badge bg-secondary">Optional</span></td>
+                                    <td>Whether to persist the record in database. Default: <code>true</code>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Code Examples Tabs -->
+                    <h6 class="fw-bold mt-4 mb-2">Example Invocations:</h6>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active btn-sm" id="pills-curl-tab" data-bs-toggle="pill" data-bs-target="#pills-curl" type="button">cURL</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-sm" id="pills-python-tab" data-bs-toggle="pill" data-bs-target="#pills-python" type="button">Python</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link btn-sm" id="pills-js-tab" data-bs-toggle="pill" data-bs-target="#pills-js" type="button">JavaScript</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-curl">
+                            <pre class="bg-dark text-light p-3 rounded-3 small mb-0"><code>curl -X POST http://127.0.0.1:8000/api/caption/ \
+  -F "image=@photo.jpg" \
+  -F "custom_candidates=A golden retriever in a field
+A cat sleeping on a sofa"</code></pre>
+                        </div>
+                        <div class="tab-pane fade" id="pills-python">
+                            <pre class="bg-dark text-light p-3 rounded-3 small mb-0"><code>import requests
+
+url = "http://127.0.0.1:8000/api/caption/"
+files = {"image": open("photo.jpg", "rb")}
+data = {"custom_candidates": "A dog running\nA cat resting"}
+
+response = requests.post(url, files=files, data=data)
+print(response.json())</code></pre>
+                        </div>
+                        <div class="tab-pane fade" id="pills-js">
+                            <pre class="bg-dark text-light p-3 rounded-3 small mb-0"><code>const formData = new FormData();
+formData.append("image", fileInput.files[0]);
+
+const res = await fetch("/api/caption/", {
+  method: "POST",
+  body: formData
+});
+const data = await res.json();
+console.log(data);</code></pre>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mt-4 mb-2">Example JSON Response:</h6>
+                    <pre class="bg-light border p-3 rounded-3 small mb-0"><code>{
+  "status": "success",
+  "data": {
+    "id": 1,
+    "caption": "A dog playing in a garden.",
+    "confidence": 88.45,
+    "top_matches": [
+      { "caption": "A dog playing in a garden.", "confidence": 88.45 },
+      { "caption": "A cat sitting on a sofa.", "confidence": 5.12 },
+      { "caption": "A horse running in a field.", "confidence": 3.20 },
+      { "caption": "A beautiful flower in a garden.", "confidence": 1.78 },
+      { "caption": "A person walking on a road.", "confidence": 0.85 }
+    ],
+    "image_url": "/media/uploaded_images/dog.jpg",
+    "device": "cpu",
+    "candidates_evaluated": 30
+  }
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Endpoint 2: GET /api/history/ -->
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden mb-4">
+                <div class="card-header bg-dark text-white p-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary fw-bold px-3 py-2">GET</span>
+                        <code class="text-white fs-6">/api/history/</code>
+                    </div>
+                    <span class="badge bg-secondary">JSON Query</span>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted">
+                        Retrieves a list of recent image caption records.
+                    </p>
+
+                    <h6 class="fw-bold mt-3 mb-2">Query Parameters:</h6>
+                    <ul class="small text-muted">
+                        <li><code>limit</code> (integer, optional, default: 20): Maximum number of records to return.</li>
+                    </ul>
+
+                    <h6 class="fw-bold mt-3 mb-2">Example cURL Request:</h6>
+                    <pre class="bg-dark text-light p-3 rounded-3 small mb-3"><code>curl http://127.0.0.1:8000/api/history/?limit=10</code></pre>
+
+                    <h6 class="fw-bold mt-3 mb-2">Example JSON Response:</h6>
+                    <pre class="bg-light border p-3 rounded-3 small mb-0"><code>{
+  "status": "success",
+  "count": 1,
+  "results": [
+    {
+      "id": 1,
+      "image_url": "/media/uploaded_images/photo.jpg",
+      "caption": "A car parked on a road.",
+      "confidence": 91.24,
+      "top_matches": [...],
+      "created_at": "2026-11-20T13:45:00.123456"
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
